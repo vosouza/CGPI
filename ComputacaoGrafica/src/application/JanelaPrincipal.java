@@ -2,6 +2,8 @@ package application;
 
 import javax.swing.JOptionPane;
 
+import figuras.Mandala;
+import figuras.Fractal;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -9,10 +11,12 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -29,6 +33,14 @@ public class JanelaPrincipal {
 	private int mode = 0;
 	private int x1, x2, y1, y2;
 	
+	Canvas canvas;
+	GraphicsContext gc;
+	Stage palco;
+	BorderPane bp;
+	
+	private Label mensagem;
+	private Label mensagem1;
+	
 	private Button botaoReta;
 	private Button botaoCirculo;
 	private Button botaolimpar;
@@ -36,23 +48,35 @@ public class JanelaPrincipal {
 	private Button botaoComum;
 	
 	JanelaPrincipal(Stage palco) {
+		this.palco = palco;
 		BorderPane bp = new BorderPane();
-		GraphicsContext gc = null;
+		this.bp = bp;
 		
-		criarBotao(bp);
-		definirCanvas(bp,gc,palco);
+		definirCanvas(); //define canvas e graphicContext
+		criarBotao();// define os botoes e funcioanlidades
+		definirFuncao();//Define as Reta, circulo e os desenhos
+		
+		
+		HBox barraInferior = new HBox();
+		mensagem = new Label();
+		mensagem1 = new Label();
+		barraInferior.getChildren().add(mensagem);
+		barraInferior.getChildren().add(mensagem1);
+		bp.setBottom(barraInferior);
 		
 		Scene scene = new Scene(bp);
+		palco.setTitle("Paint 1.0");
+		palco.setResizable(false);
 		palco.setScene(scene);
 		palco.show();
 	}
 	
 	
-	
-	private void definirCanvas(BorderPane bp,GraphicsContext gc, Stage palco) {	
-		Canvas canvas = new Canvas(500, 500);
+	//Cria o Canvas
+	private void definirCanvas() {	
+		canvas = new Canvas(500, 500);
 		gc = canvas.getGraphicsContext2D();
-		definirFuncao(canvas,palco,gc);
+		
 		
 		StackPane sp = new StackPane();
 		sp.getChildren().add(canvas);
@@ -63,7 +87,7 @@ public class JanelaPrincipal {
 
 
 
-	private void criarBotao(BorderPane bp) {
+	private void criarBotao() {
 		botaoReta = new Button();
 		botaoReta.setText("Desenhar Reta");
 		botaoReta.setPrefWidth(125);
@@ -93,7 +117,7 @@ public class JanelaPrincipal {
 			 
         	@Override
         	public void handle(ActionEvent event) {
-        		mode = 3;
+        		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         	}
         });
 		
@@ -104,6 +128,8 @@ public class JanelaPrincipal {
 			 
         	@Override
         	public void handle(ActionEvent event) {
+        		mensagem1.setText("Clique em algum lugar do Canvas");
+        		palco.setTitle("Clique em qualquer lugar do Canvas");
         		mode = 4;
         	}
         });
@@ -115,27 +141,30 @@ public class JanelaPrincipal {
 			 
         	@Override
         	public void handle(ActionEvent event) {
+        		mensagem1.setText("Clique em algum lugar do Canvas");
         		mode = 5;
         	}
         });
 		
 		VBox menu = new VBox();
+		menu.setBackground(new Background(new BackgroundFill(Color.BLANCHEDALMOND, CornerRadii.EMPTY, Insets.EMPTY)));
 		menu.getChildren().addAll(botaoReta,botaoCirculo,botaolimpar,botaoTriangulo,botaoComum);
 		bp.setLeft(menu);
 	}
 	
-	public void definirFuncao(Canvas canvas, Stage palco, GraphicsContext gc) {
+	public void definirFuncao() {
 		primeiraVez = true;
 		
 		canvas.setOnMouseMoved(event->{
-			palco.setTitle(" (" + (int)event.getX() + ", " + (int)event.getY() + ")");
+			mensagem.setText(" (" + (int)event.getX() + ", " + (int)event.getY() + ")");
 		});
 		
 		
 		canvas.setOnMouseClicked(event->{
+			
 			switch(mode) {
 			case 1:
-				
+				//reta
 				if (primeiraVez == true) {
 						x1 = (int)event.getX();
 						y1 = (int)event.getY();
@@ -149,7 +178,7 @@ public class JanelaPrincipal {
 						primeiraVez = true;
 					}
 				break;
-			case 2:
+			case 2: //circulo
 					if (primeiraVez == true) {
 						x1 = (int)event.getX();
 						y1 = (int)event.getY();
@@ -164,20 +193,24 @@ public class JanelaPrincipal {
 						primeiraVez = true;
 					}
 				break;
-			case 3:
-					gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-				break;
-			case 4:
+			case 4: // triangulo recursivo
+				mensagem1.setText("");
 				try {
 					int x = Integer.parseInt(JOptionPane.showInputDialog("Digite q quantidade de triangulos"));
-					new Triangulo(canvas,palco, gc).trianguloRecursivo(x);
+					if(x<10){
+						new Fractal(canvas,palco, gc).trianguloRecursivo(x);
+					}else{
+						JOptionPane.showMessageDialog(null, "Valor muito grande, tente um valor menor!");
+					}
+					
 				}catch(Exception e){
 					JOptionPane.showMessageDialog(null, "Digite um valor valido");
 				}
 				
 				break;
-			case 5:
-					new Circulo(canvas,palco, gc);
+			case 5: //mandala
+					new Mandala(canvas,palco, gc);
+					mensagem1.setText("");
 				break;
 			}
 		});
