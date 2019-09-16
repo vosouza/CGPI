@@ -1,5 +1,7 @@
 package application;
 
+import java.util.Stack;
+
 import javax.swing.JOptionPane;
 
 import figuras.Mandala;
@@ -37,6 +39,8 @@ public class JanelaPrincipal {
 	GraphicsContext gc;
 	Stage palco;
 	BorderPane bp;
+	Stack stack;
+	
 	
 	private Label mensagem;
 	private Label mensagem1;
@@ -46,6 +50,7 @@ public class JanelaPrincipal {
 	private Button botaolimpar;
 	private Button botaoTriangulo;
 	private Button botaoComum;
+	private Button botaoVoltar;
 	
 	JanelaPrincipal(Stage palco) {
 		this.palco = palco;
@@ -69,6 +74,7 @@ public class JanelaPrincipal {
 		palco.setResizable(false);
 		palco.setScene(scene);
 		palco.show();
+		Pilha stack = new Pilha();
 	}
 	
 	
@@ -91,7 +97,7 @@ public class JanelaPrincipal {
 		botaoReta = new Button();
 		botaoReta.setText("Desenhar Reta");
 		botaoReta.setPrefWidth(125);
-		botaoReta.setOnAction(new EventHandler<ActionEvent>() {
+		botaoReta.setOnAction(new      <ActionEvent>() {
 	 
         	@Override
         	public void handle(ActionEvent event) {
@@ -138,11 +144,23 @@ public class JanelaPrincipal {
 		botaoComum.setText("Desenho Comum");
 		botaoComum.setPrefWidth(125);
 		botaoComum.setOnAction(new EventHandler<ActionEvent>() {
+			
+		
 			 
         	@Override
         	public void handle(ActionEvent event) {
         		mensagem1.setText("Clique em algum lugar do Canvas");
         		mode = 5;
+        	}
+        });
+		
+		botaoVoltar = new Button();
+		botaoVoltar.setText("Voltar");
+		botaoVoltar.setPrefWidth(125);
+		botaoComum.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+        		mensagem1.setText("Refaz a ùltima ação");
+        		mode = 6;
         	}
         });
 		
@@ -175,6 +193,7 @@ public class JanelaPrincipal {
 						y2 = (int)event.getY();
 						RetaGr.desenhar(gc, x1, y1, x2, y2, "", Color.RED,  2, AlgoritmosRetas.MIDPOINT);					
 						new PontoGr(x2, y2, Color.BLUE, "", 6).desenharPonto(gc);
+						Pilha.push(new PontoGr(x2, y2, Color.BLUE, "", 6).desenharPonto(gc), stack);
 						primeiraVez = true;
 					}
 				break;
@@ -190,6 +209,7 @@ public class JanelaPrincipal {
 						double raio = new PontoGr (x1, y1).distance(x2, y2);
 						CirculoGr.desenhar(gc, x1, y1, raio, Color.GREEN, "", 2, AlgoritmosCirculos.STROKELINE);					
 						new PontoGr(x2, y2, Color.BLUE, "", 6).desenharPonto(gc);
+						Pilha.push(new PontoGr(x2, y2, Color.BLUE, "", 6).desenharPonto(gc), stack);
 						primeiraVez = true;
 					}
 				break;
@@ -199,6 +219,7 @@ public class JanelaPrincipal {
 					int x = Integer.parseInt(JOptionPane.showInputDialog("Digite q quantidade de triangulos"));
 					if(x<10){
 						new Fractal(canvas,palco, gc).trianguloRecursivo(x);
+						Pilha.push(new Fractal(canvas,palco, gc).trianguloRecursivo(x), stack);
 					}else{
 						JOptionPane.showMessageDialog(null, "Valor muito grande, tente um valor menor!");
 					}
@@ -212,6 +233,10 @@ public class JanelaPrincipal {
 					new Mandala(canvas,palco, gc);
 					mensagem1.setText("");
 				break;
+			case 6: //Voltar
+				if(!Pilha.isEmpty(stack)){
+					Pilha.pop();
+				}
 			}
 		});
 	}
