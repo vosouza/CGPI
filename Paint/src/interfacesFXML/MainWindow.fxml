@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
+   <left>
+      <VBox prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER">
+               <children>
+                  <Label text="Opções" />
+               </children>
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+            </HBox>
+            <Separator>
+               <VBox.margin>
+                  <Insets left="5.0" top="5.0" />
+               </VBox.margin>
+            </Separator>
+            <HBox alignment="CENTER">
+               <children>
+                  <Button fx:id="btnReta" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#botaoReta" prefHeight="32.0" prefWidth="32.0" style="-fx-background-image: url(&quot; /icones/icone_reta.png&quot;);" textAlignment="CENTER">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </Button>
+                  <Button fx:id="btnCirculo" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#botaoCirculo" prefHeight="32.0" prefWidth="32.0" style="-fx-background-image: url(&quot; /icones/icone_circulo.png&quot;); -fx-background-repeat: no-repeat;">
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0">
+               <children>
+                  <Button fx:id="btnQuadrado" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#botaoQuadrado" prefHeight="32.0" prefWidth="32.0" style="-fx-background-image: url(&quot; /icones/fractal.png&quot;); -fx-background-repeat: no-repeat;">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="btnPoligono" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#botaoPoligono" prefHeight="32.0" prefWidth="32.0" style="-fx-background-image: url(&quot; /icones/icone_mandala.png&quot;); -fx-background-repeat: no-repeat;">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0">
+               <children>
+                  <Button fx:id="btnMandala" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#botaoMandala" prefHeight="32.0" prefWidth="32.0" style="-fx-background-image: url(&quot; /icones/mandala.png&quot;); -fx-background-repeat: no-repeat;">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="btnFractal" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#botaoFractal" prefHeight="32.0" prefWidth="32.0" style="-fx-background-image: url(&quot; /icones/icone_circulo.png&quot;); -fx-background-repeat: no-repeat;">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0">
+               <children>
+                  <Button fx:id="btnLimpar" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#botaoLimpar" prefHeight="32.0" prefWidth="32.0" style="-fx-background-image: url(&quot; /icones/icone_borracha.png&quot;); -fx-background-repeat: no-repeat;">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="btnDesfazer" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#botaoDesfazer" prefHeight="32.0" prefWidth="32.0" style="-fx-background-image: url(&quot; /icones/desfazer.png&quot;); -fx-background-repeat: no-repeat;">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <Separator>
+               <padding>
+                  <Insets bottom="5.0" top="5.0" />
+               </padding>
+            </Separator>
+            <ColorPicker fx:id="colorPicker" onAction="#pegarCor">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </ColorPicker>
+            <Separator>
+               <VBox.margin>
+                  <Insets bottom="5.0" top="5.0" />
+               </VBox.margin>
+            </Separator>
+            <Slider fx:id="sliderTamanho" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" orientation="VERTICAL" prefHeight="165.0" prefWidth="50.0" showTickLabels="true" showTickMarks="true" value="1.0">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </Slider>
+            <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #DCDCDC;">
+               <children>
+                  <Canvas fx:id="miniMapa" height="100.0" width="100.0">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Canvas>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </left>
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+         <effect>
+            <DropShadow blurType="GAUSSIAN" />
+         </effect>
+      </MenuBar>
+   </top>
+   <center>
+      <StackPane prefHeight="500.0" prefWidth="500.0" style="-fx-background-color: White;" BorderPane.alignment="CENTER">
+         <children>
+            <Canvas fx:id="viewPortCanvas" height="500.0" onMouseClicked="#mouseClickCanvas" width="500.0" StackPane.alignment="CENTER">
+               <StackPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" />
+               </StackPane.margin></Canvas>
+         </children>
+         <BorderPane.margin>
+            <Insets left="5.0" top="5.0" />
+         </BorderPane.margin>
+      </StackPane>
+   </center>
+</BorderPane>
