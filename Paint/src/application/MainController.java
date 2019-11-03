@@ -131,9 +131,14 @@ public class MainController implements Initializable {
 		};   
 		viewPortCanvas.addEventFilter(MouseEvent.MOUSE_MOVED, eventHandler);
 		
+<<<<<<< HEAD
+		LeitorXML arq = new LeitorXML();
+		arq.passar();
+=======
 		//LeitorXML arq = new LeitorXML(historico);
 		//arq.fazerParsing();
 		
+>>>>>>> master
 		mode = 0;
 	}
 
