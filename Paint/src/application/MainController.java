@@ -22,7 +22,7 @@ public class MainController implements Initializable {
 	private PilhaPrimitivos desfazer; // pilha com todos os primitivos que foram retirador da lista
 	private ListaPrimitivos historico; //lista com todos os primitivos
 	
-	private int mode; // identifica qual botão foi precionado
+	private int mode; // identifica qual botï¿½o foi precionado
 	
 	private CanvasAction desenharNoCanvas;// classe que contem todos os desenhos para serem colocados no canvas
 	private CanvasAction desenharNoMiniMapa;
@@ -131,14 +131,8 @@ public class MainController implements Initializable {
 		};   
 		viewPortCanvas.addEventFilter(MouseEvent.MOUSE_MOVED, eventHandler);
 		
-<<<<<<< HEAD
-		LeitorXML arq = new LeitorXML();
-		arq.passar();
-=======
-		//LeitorXML arq = new LeitorXML(historico);
-		//arq.fazerParsing();
-		
->>>>>>> master
+		//LeitorXML arq = new LeitorXML();
+		//arq.passar();
 		mode = 0;
 	}
 
