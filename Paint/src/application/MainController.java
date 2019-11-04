@@ -41,7 +41,8 @@ public class MainController implements Initializable {
 				boolean cliques2 = true;
 				while(cliques2) {
 					System.out.println("xx");
-					if((event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2)) {
+					if(event.getClickCount() == 2 && !event.isConsumed()) {
+						event.consume();
 						cliques2 = false;
 					}
 				}
@@ -140,7 +141,7 @@ public class MainController implements Initializable {
 		};   
 		viewPortCanvas.addEventFilter(MouseEvent.MOUSE_MOVED, eventHandler);
 		
-		LeitorXML arq = new LeitorXML();
+		LeitorXML arq = new LeitorXML(historico);
 		arq.passar();
 		mode = 0;
 	}
