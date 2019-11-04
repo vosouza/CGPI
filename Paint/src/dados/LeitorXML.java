@@ -28,67 +28,69 @@ public class LeitorXML {
      * @param args the command line arguments
      */
     public void passar() {
-    	System.out.println("NOME=");
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             
-            Document doc = builder.parse("C:/Users/306526/Desktop/Paint/src/interfacesFXML/exemplo.xml");
+            Document doc = builder.parse("C:\\Users\\cpudv\\Desktop\\Trabalhos\\Paint\\src\\interfacesFXML\\exemplo.xml");
             
-            NodeList listaDePessoas = doc.getElementsByTagName("Figura");
+            NodeList listaPrimitivos = doc.getElementsByTagName("Figura");
             
-            int tamanhoLista = listaDePessoas.getLength();
-            
-            for (int i = 0; i < tamanhoLista; i++) {
-                
-                //pego cada item (pessoa) como um n� (node)
-                Node noPessoa = listaDePessoas.item(i);
-                
-                //verifica se o noPessoa � do tipo element (e n�o do tipo texto etc)
-                if(noPessoa.getNodeType() == Node.ELEMENT_NODE){
-                    
-                    //caso seja um element, converto o no Pessoa em Element pessoa
-                    Element elementoPessoa = (Element) noPessoa;
-                    
-                    //j� posso pegar o atributo do element
-                    String id = elementoPessoa.getAttribute("id");
-                    
-                    //imprimindo o id
-                    System.out.println("ID = " + id);      
-                    
-                    //recupero os nos filhos do elemento pessoa (nome, idade e peso)
-                    NodeList listaDeFilhosDaPessoa = elementoPessoa.getChildNodes();
-                    
-                    //pego o tamanho da lista de filhos do elemento pessoa
-                    int tamanhoListaFilhos = listaDeFilhosDaPessoa.getLength();
+            int tamanhoLista = listaPrimitivos.getLength();
+            for (int i = 0; i < tamanhoLista; i++) {//Figura
+
+                Node primitivo = listaPrimitivos.item(i);
+
+                if(primitivo.getNodeType() == Node.ELEMENT_NODE){
+
+                    Element elementoPrimitivo = (Element) primitivo;
+                    NodeList listaNosPrimitivos = elementoPrimitivo.getChildNodes();
+                    int tamanhoListaPrimitivos = listaNosPrimitivos.getLength();
+
+                    for (int j = 0; j < tamanhoListaPrimitivos; j++) {//Reta Circulo Quadrado
+
+                        Node noPrimitivo = listaNosPrimitivos.item(j);
+
+                        if(noPrimitivo.getNodeType() == Node.ELEMENT_NODE){
+
+                            Element primitivoFilho = (Element) noPrimitivo;
+                            NodeList propriedadesPrimitivos = primitivoFilho.getChildNodes();
+                            int prop =  propriedadesPrimitivos.getLength();
                             
-                    //varredura na lista de filhos do elemento pessoa
-                    for (int j = 0; j < tamanhoListaFilhos; j++) {
-                        
-                        //crio um no com o cada tag filho dentro do no pessoa (tag nome, idade e peso)
-                        Node noFilho = listaDeFilhosDaPessoa.item(j);
-                        
-                        //verifico se s�o tipo element
-                        if(noFilho.getNodeType() == Node.ELEMENT_NODE){
-                            
-                            //converto o no filho em element filho
-                            Element elementoFilho = (Element) noFilho;
-                            
-                            //verifico em qual filho estamos pela tag
-                            switch(elementoFilho.getTagName()){
-                                case "nome":
-                                    //imprimo o nome
-                                    System.out.println("NOME=" + elementoFilho.getTextContent());
+                            if(primitivoFilho.getTagName().equals("Poligono")) {
+                            	 System.out.println("Poligono");
+                            }else {
+                            	for (int x = 0; x < prop; x++) {
+                            		 System.out.println("Raiz");
+                            		 
+                            		 Node parametros = propriedadesPrimitivos.item(x);
+	                               	 if(primitivoFilho.getTagName().equals("Reta")) {
+	                               		 Element priProp = (Element) parametros;
+	                               		 NodeList paramPri = priProp.getChildNodes();
+	                               		 Node p1 = paramPri.item(0);
+	                               		 System.out.println("p1 : " + p1.getTextContent());
+	                               		 Node p2 = paramPri.item(1);
+	                               		System.out.println("p2 : " + p2.getTextContent());
+	                               	 }else if(primitivoFilho.getTagName().equals("Circulo")) {
+	                               		 
+	                               	 }
+                            		
+                            	} 
+                            }
+
+                            switch(primitivoFilho.getTagName()){
+                                case "Reta":
+
+                                    System.out.println("Reta=" + primitivoFilho.getTextContent());
                                     break;
                                     
-                                case "idade":
-                                    //imprimo a idade
-                                    System.out.println("IDADE=" + elementoFilho.getTextContent());
+                                case "Circulo":
+
+                                    System.out.println("Circulo=" + primitivoFilho.getTextContent());
                                     break;
                                     
-                                case "peso":
-                                    //imprimo o peso
-                                    System.out.println("PESO=" + elementoFilho.getTextContent());
+                                case "Retangulo":
+                                		System.out.println("Retangulo" + primitivoFilho.getTextContent());
                                     break;
                             }
                         }

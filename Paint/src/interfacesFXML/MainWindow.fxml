@@ -75,7 +75,7 @@
             </HBox>
             <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0">
                <children>
-                  <Button fx:id="btnMandala" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#botaoMandala" prefHeight="24.0" prefWidth="24.0" style="-fx-background-image: url(&quot; /icones/icone_circulo.png&quot;); -fx-background-repeat: no-repeat;">
+                  <Button fx:id="btnMandala" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#botaoMandala" prefHeight="24.0" prefWidth="24.0" style="-fx-background-image: url(&quot; /icones/icone_mandala.png&quot;); -fx-background-repeat: no-repeat;">
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
@@ -83,7 +83,7 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="btnFractal" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#botaoFractal" prefHeight="24.0" prefWidth="24.0" style="-fx-background-image: url(&quot; /icones/icone_circulo.png&quot;); -fx-background-repeat: no-repeat;">
+                  <Button fx:id="btnFractal" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#botaoFractal" prefHeight="24.0" prefWidth="24.0" style="-fx-background-image: url(&quot; /icones/icone_fractal.png&quot;); -fx-background-repeat: no-repeat;">
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
@@ -103,7 +103,7 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="btnDesfazer" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#botaoDesfazer" prefHeight="24.0" prefWidth="24.0" style="-fx-background-image: url(&quot; /icones/icone_borracha.png&quot;); -fx-background-repeat: no-repeat;">
+                  <Button fx:id="btnDesfazer" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#botaoDesfazer" prefHeight="24.0" prefWidth="24.0" style="-fx-background-image: url(&quot; /icones/desfazer.png&quot;); -fx-background-repeat: no-repeat;">
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>

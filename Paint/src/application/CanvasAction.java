@@ -12,6 +12,7 @@ import primitivos.AlgoritmosCirculos;
 import primitivos.AlgoritmosRetas;
 import primitivos.CirculoGr;
 import primitivos.PontoGr;
+import primitivos.QuadradoGr;
 import primitivos.RetaGr;
 
 public class CanvasAction {
@@ -62,7 +63,7 @@ public class CanvasAction {
 	public void action(int mode, int x, int y, ListaPrimitivos lista) {
 		
 		switch(mode){
-			case 1:
+			case 1: // trata do clique da reta
 				if(primeiraVez) {
 					x1 = x;
 					y1 = y;
@@ -73,7 +74,8 @@ public class CanvasAction {
 					primeiraVez = true;
 				}
 			break;
-			case 2:
+			
+			case 2: // trata do clique do circulo
 				if(primeiraVez) {
 					x1 = x;
 					y1 = y;
@@ -85,7 +87,24 @@ public class CanvasAction {
 					primeiraVez = true;
 				}
 			break;
-			case 3:
+			
+			case 3://botao quadrado
+				if(primeiraVez) {
+					x1 = x;
+					y1 = y;
+					primeiraVez = false;
+				}else {
+					
+					new QuadradoGr(x1,y1,x,y,cor,tamanho).desenharQuadrado(x1, y1, x, y, gc);;
+					lista.inserir(new QuadradoGr(x1,y1,x,y,cor,tamanho));
+					primeiraVez = true;
+				}
+			break;
+			
+			case 4:
+			break;
+			
+			case 5: // trata do clique do fractal
 				try {
 					int qtd = Integer.parseInt(JOptionPane.showInputDialog("Digite q quantidade de triangulos"));
 					new Fractal(canvas, gc).trianguloRecursivo(qtd);
@@ -94,24 +113,27 @@ public class CanvasAction {
 					JOptionPane.showMessageDialog(null, "Digite um valor valido ");
 				}
 			break;
-			case 4:
+			
+			case 6: // trata do clique da mandala
 				new Mandala(canvas, gc,1);
+				lista.inserir(new Mandala(canvas, gc,1));
+				
 			break;
 		}
 		
 	}
 	
-	//desenha na convas sem guardar na lista
+	//desenha no canvas sem guardar na lista
 	public void desenhoTemporario(int mode,int x, int y,ListaPrimitivos lista){
 		if(primeiraVez == false) {
 			limparTela();
+			loadHistorico(lista);
 			if(mode == 1) {
 				RetaGr.desenhar(gc, x1, y1, x, y, "", cor,  tamanho, AlgoritmosRetas.STROKELINE);
 			}else if(mode == 2) {
 				double raio = new PontoGr (x1, y1).distance(x, y);
 				CirculoGr.desenhar(gc, x1, y1, raio, cor, "", tamanho, AlgoritmosCirculos.STROKELINE);
-			}
-			loadHistorico(lista);
+			}	
 		}
 	}
 	
@@ -132,6 +154,12 @@ public class CanvasAction {
 				
 			}else if(obj instanceof Mandala) {
 				new Mandala(canvas, gc,1);
+			}else if(obj instanceof QuadradoGr) {
+				Double x =((QuadradoGr) obj).getP1().getX(),
+						y = ((QuadradoGr) obj).getP1().getY(),
+						x2 = ((QuadradoGr) obj).getP2().getX(),
+						y2 =((QuadradoGr) obj).getP2().getY();
+				QuadradoGr.desenharQuadrado(x.intValue(),y.intValue(),x2.intValue(), y2.intValue(), ((QuadradoGr) obj).getCor(), ((QuadradoGr) obj).getEsp(), gc);
 			}
 		}
 	}
@@ -155,6 +183,12 @@ public class CanvasAction {
 				
 			}else if(obj instanceof Mandala) {
 				new Mandala(canvas, gc,0.2);
+			}else if(obj instanceof QuadradoGr) {
+				Double x =((QuadradoGr) obj).getP1().getX()*mult,
+						y = ((QuadradoGr) obj).getP1().getY()*mult,
+						x2 = ((QuadradoGr) obj).getP2().getX()*mult,
+						y2 =((QuadradoGr) obj).getP2().getY()*mult;
+				QuadradoGr.desenharQuadrado(x.intValue(),y.intValue(),x2.intValue(), y2.intValue(), ((QuadradoGr) obj).getCor(), ((QuadradoGr) obj).getEsp(), gc);
 			}
 		}
 	}

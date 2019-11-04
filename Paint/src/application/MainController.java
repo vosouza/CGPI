@@ -22,7 +22,7 @@ public class MainController implements Initializable {
 	private PilhaPrimitivos desfazer; // pilha com todos os primitivos que foram retirador da lista
 	private ListaPrimitivos historico; //lista com todos os primitivos
 	
-	private int mode; // identifica qual botï¿½o foi precionado
+	private int mode; // identifica qual botão foi precionado
 	
 	private CanvasAction desenharNoCanvas;// classe que contem todos os desenhos para serem colocados no canvas
 	private CanvasAction desenharNoMiniMapa;
@@ -37,7 +37,17 @@ public class MainController implements Initializable {
 	@FXML private void mouseClickCanvas(MouseEvent event) {
 		pegarTamanho();
 		if(event.getButton() == MouseButton.PRIMARY) {
-			desenharNoCanvas.action(mode, (int)event.getX(), (int)event.getY(), historico);
+			if(mode == 6) {
+				boolean cliques2 = true;
+				while(cliques2) {
+					System.out.println("xx");
+					if((event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2)) {
+						cliques2 = false;
+					}
+				}
+			}else {
+				desenharNoCanvas.action(mode, (int)event.getX(), (int)event.getY(), historico);
+			}
 		}else if(event.getButton() == MouseButton.SECONDARY) {
 			desenharNoCanvas.cancelarClick();
 			desenharNoCanvas.limparTela();
@@ -68,6 +78,14 @@ public class MainController implements Initializable {
 	
 	@FXML private void botaoPoligono(ActionEvent event) {
 		mode = 4;
+	}
+	
+	@FXML private void botaoMandala(ActionEvent event) {
+		mode = 5;
+	}
+	
+	@FXML private void botaoFractal(ActionEvent event) {
+		mode = 6;
 	}
 	
 	@FXML private void botaoLimpar(ActionEvent event) {
@@ -105,15 +123,6 @@ public class MainController implements Initializable {
 		desenharNoCanvas.loadHistorico(historico);
 		desenharNoMiniMapa.loadHistorico(historico,0.2);
 	}
-	
-	@FXML private void botaoMandala(ActionEvent event) {
-		mode = 7;
-	}
-	
-	@FXML private void botaoFractal(ActionEvent event) {
-		mode = 8;
-	}
-	
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -131,8 +140,8 @@ public class MainController implements Initializable {
 		};   
 		viewPortCanvas.addEventFilter(MouseEvent.MOUSE_MOVED, eventHandler);
 		
-		//LeitorXML arq = new LeitorXML();
-		//arq.passar();
+		LeitorXML arq = new LeitorXML();
+		arq.passar();
 		mode = 0;
 	}
 
