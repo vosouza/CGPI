@@ -37,24 +37,15 @@ public class MainController implements Initializable {
 	@FXML private void mouseClickCanvas(MouseEvent event) {
 		pegarTamanho();
 		if(event.getButton() == MouseButton.PRIMARY) {
-			if(mode == 6) {
-				boolean cliques2 = true;
-				while(cliques2) {
-					System.out.println("xx");
-					if(event.getClickCount() == 2 && !event.isConsumed()) {
-						event.consume();
-						cliques2 = false;
-					}
-				}
-			}else {
-				desenharNoCanvas.action(mode, (int)event.getX(), (int)event.getY(), historico);
-			}
+			desenharNoCanvas.action(mode, (int)event.getX(), (int)event.getY(), historico);
+			if(event.getClickCount() == 2){
+                desenharNoCanvas.doubleClique();
+            }
 		}else if(event.getButton() == MouseButton.SECONDARY) {
 			desenharNoCanvas.cancelarClick();
-			desenharNoCanvas.limparTela();
-			desenharNoCanvas.loadHistorico(historico);
+			desenharNoCanvas.doubleClique();
 		}
-		desenharNoMiniMapa.loadHistorico(historico, 0.2);
+		atualizarTela();
 	}
 	
 	@FXML private void pegarCor(ActionEvent event) {
@@ -79,6 +70,7 @@ public class MainController implements Initializable {
 	
 	@FXML private void botaoPoligono(ActionEvent event) {
 		mode = 4;
+		//historico.inserir(new Poligono());
 	}
 	
 	@FXML private void botaoMandala(ActionEvent event) {
@@ -96,10 +88,7 @@ public class MainController implements Initializable {
 			historico.remover(i);
 			i--;
 		}
-		desenharNoCanvas.limparTela();
-		desenharNoMiniMapa.limparTela();
-		desenharNoCanvas.loadHistorico(historico);
-		desenharNoMiniMapa.loadHistorico(historico,0.2);
+		atualizarTela();
 	}
 	
 	@FXML private void botaoDesfazer(ActionEvent event) {
@@ -119,20 +108,26 @@ public class MainController implements Initializable {
 			System.out.println(e);
 		}
 		
+		atualizarTela();
+	}
+	
+	//limpa a tela e redesenha conforme as figuras salvas na lista
+	private void atualizarTela() {
 		desenharNoCanvas.limparTela();
 		desenharNoMiniMapa.limparTela();
 		desenharNoCanvas.loadHistorico(historico);
-		desenharNoMiniMapa.loadHistorico(historico,0.2);
+		desenharNoMiniMapa.loadHistorico(historico,0.2);//0.2 é a razao da do canvas pelos miniMapa
 	}
-
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
+		//Inicializacao das variaveis
 		historico =  new ListaPrimitivos();
 		desfazer = new PilhaPrimitivos();
 		desenharNoCanvas = new CanvasAction(viewPortCanvas);
 		desenharNoMiniMapa = new CanvasAction(miniMapa);
 		
+		//Evento para dasenho temporario
+		//chama desenharTemporario que não grava na lista e desenha sempre que o mouse se mover
 		EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() { 
 			   @Override 
 			   public void handle(MouseEvent event) { 
@@ -141,8 +136,8 @@ public class MainController implements Initializable {
 		};   
 		viewPortCanvas.addEventFilter(MouseEvent.MOUSE_MOVED, eventHandler);
 		
-		LeitorXML arq = new LeitorXML(historico);
-		arq.passar();
+		//LeitorXML arq = new LeitorXML(historico);
+		//arq.passar();
 		mode = 0;
 	}
 

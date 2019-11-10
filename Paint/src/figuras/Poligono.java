@@ -1,6 +1,6 @@
 package figuras;
 
-import dados.PilhaPrimitivos;
+import dados.ListaPrimitivos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -9,7 +9,7 @@ import primitivos.PontoGr;
 import primitivos.RetaGr;
 
 public class Poligono {
-	private PilhaPrimitivos pontos; // pilha que armazena todos os pontos do poligono
+	private ListaPrimitivos pontos; // pilha que armazena todos os pontos do poligono
 	private Color cor; // cor de todas as linhas
 	private int tamanho;
 	
@@ -22,7 +22,7 @@ public class Poligono {
 	}
 
 	public Poligono() {
-		pontos = new PilhaPrimitivos();
+		pontos = new ListaPrimitivos();
 	}
 	
 	public void setCor(Color c) {
@@ -34,30 +34,35 @@ public class Poligono {
 	}
 	
 	public void addPonto(PontoGr ponto) {
-		pontos.push(ponto);
+		pontos.inserir(ponto);
 	}
 	
 	public void removerUltimo() {
-		pontos.pop();
+		pontos.remover(pontos.getQtd()-1);
 	}
 	
+	public PontoGr getLastPonto() {
+		return (PontoGr) pontos.buscar(pontos.getQtd()-1);
+	}
 	public void desenharPoligono(Canvas canvas, GraphicsContext gc,double mult) {
-		int contador = 1;
-		PontoGr p1 = null, p2 = null;
-		PilhaPrimitivos aux = new PilhaPrimitivos();
-		
-		while(pontos.isEmpty() ==  false) {
-			aux.push(pontos.top());
-			pontos.pop();
-		}
-		while(aux.isEmpty() ==  false) {
-			if(contador%2 == 0) {
-				p2 = (PontoGr) aux.top();
-				RetaGr.desenhar(gc,p1.getX(),p1.getY(),p2.getX(),p2.getY(),"", cor,  tamanho, AlgoritmosRetas.STROKELINE);
+		PontoGr p1 = null, p2 = null;		
+		for(int cont = 0; cont< pontos.getQtd() ; cont++) {
+			if(cont%2 == 0) {
+				p1 = (PontoGr) pontos.buscar(cont);
 			}else {
-				p1 = (PontoGr) aux.top();
+				p2 = (PontoGr) pontos.buscar(cont);
 			}
-			aux.pop();
+			if(p1 != null && p2 != null) {
+				RetaGr.desenhar(gc,(int)p1.getX(),(int)p1.getY(),(int)p2.getX(),(int)p2.getY(),"", cor,  tamanho, AlgoritmosRetas.STROKELINE);
+			}
+		}
+	}
+	
+	public void fecharFigura(GraphicsContext gc,double mult) {
+		if(pontos.getQtd()-1 >= 2) {
+			PontoGr p1 = (PontoGr) pontos.buscar(0);
+			PontoGr p2 = (PontoGr) pontos.buscar(pontos.getQtd()-1);
+			RetaGr.desenhar(gc,(int)p1.getX(),(int)p1.getY(),(int)p2.getX(),(int)p2.getY(),"", cor,  tamanho, AlgoritmosRetas.STROKELINE);
 		}
 	}
 }

@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 import dados.ListaPrimitivos;
 import figuras.Fractal;
 import figuras.Mandala;
+import figuras.Poligono;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -20,6 +21,8 @@ public class CanvasAction {
 	private boolean primeiraVez;//variavel para marcar os cliques na tela
 	
 	private int x1, y1;
+	
+	private boolean doisCliques = false;
 	
 	private Color cor;
 	private int tamanho;
@@ -67,7 +70,7 @@ public class CanvasAction {
 				if(primeiraVez) {
 					x1 = x;
 					y1 = y;
-					primeiraVez = false;
+					primeiraVez = false;					
 				}else {
 					RetaGr.desenhar(gc, x1, y1, x, y, "", cor,  tamanho, AlgoritmosRetas.STROKELINE);
 					lista.inserir(new RetaGr( x1, y1, x, y, cor, "",  tamanho));
@@ -94,14 +97,34 @@ public class CanvasAction {
 					y1 = y;
 					primeiraVez = false;
 				}else {
-					
-					new QuadradoGr(x1,y1,x,y,cor,tamanho).desenharQuadrado(x1, y1, x, y, gc);;
+					new QuadradoGr(x1,y1,x,y,cor,tamanho).desenharQuadrado(x1, y1, x, y, gc);
 					lista.inserir(new QuadradoGr(x1,y1,x,y,cor,tamanho));
 					primeiraVez = true;
 				}
 			break;
 			
-			case 4:
+			case 4://Poligono
+				Poligono figura = null;
+				if(doisCliques == false) {
+					lista.inserir(new Poligono());
+					figura = (Poligono)lista.buscar(lista.getQtd()-1);
+					figura.setCor(cor);
+					figura.setTamanho(tamanho);
+					figura.fecharFigura(gc, 1);
+					doubleClique();
+				}else {
+					figura = (Poligono)lista.buscar(lista.getQtd()-1);
+				}
+				
+				if(primeiraVez) {
+					x1 = x;
+					y1 = y;
+					figura.addPonto(new PontoGr(x1,y1));
+					primeiraVez = false;
+				}else {
+					figura.addPonto(new PontoGr(x,y));
+					figura.desenharPoligono(canvas, gc, 1);
+				}
 			break;
 			
 			case 5: // trata do clique do fractal
@@ -133,6 +156,12 @@ public class CanvasAction {
 			}else if(mode == 2) {
 				double raio = new PontoGr (x1, y1).distance(x, y);
 				CirculoGr.desenhar(gc, x1, y1, raio, cor, "", tamanho, AlgoritmosCirculos.STROKELINE);
+			}else if(mode == 3) {
+				new QuadradoGr(x1,y1,x,y,cor,tamanho).desenharQuadrado(x1, y1, x, y, gc);
+			}else if(mode == 4) {
+				Poligono poli = (Poligono) lista.buscar(lista.getQtd()-1);
+				PontoGr p = poli.getLastPonto();
+				RetaGr.desenhar(gc,(int) p.getX(),(int) p.getY(), x, y, "", cor,  tamanho, AlgoritmosRetas.STROKELINE);
 			}	
 		}
 	}
@@ -144,22 +173,26 @@ public class CanvasAction {
 	//Desenha os primitivos guardados na lista
 	public void loadHistorico(ListaPrimitivos h) {
 		Object obj;
-		for(int i = h.getQtd() - 1 ; i >= 0; i--) {
-			obj = h.buscar(i);
-			if(obj instanceof RetaGr) {
-				((RetaGr) obj).desenharReta(gc, AlgoritmosRetas.STROKELINE);
-			}else if(obj instanceof CirculoGr) {
-				((CirculoGr) obj).desenharCirculo(gc, AlgoritmosCirculos.STROKELINE);
-			}else if(obj instanceof Fractal) {
-				
-			}else if(obj instanceof Mandala) {
-				new Mandala(canvas, gc,1);
-			}else if(obj instanceof QuadradoGr) {
-				Double x =((QuadradoGr) obj).getP1().getX(),
-						y = ((QuadradoGr) obj).getP1().getY(),
-						x2 = ((QuadradoGr) obj).getP2().getX(),
-						y2 =((QuadradoGr) obj).getP2().getY();
-				QuadradoGr.desenharQuadrado(x.intValue(),y.intValue(),x2.intValue(), y2.intValue(), ((QuadradoGr) obj).getCor(), ((QuadradoGr) obj).getEsp(), gc);
+		if(h.vazia() == false) {
+			for(int i = 0 ; i < h.getQtd() ; i++) {
+				obj = h.buscar(i);
+				if(obj instanceof RetaGr) {
+					((RetaGr) obj).desenharReta(gc, AlgoritmosRetas.STROKELINE);
+				}else if(obj instanceof CirculoGr) {
+					((CirculoGr) obj).desenharCirculo(gc, AlgoritmosCirculos.STROKELINE);
+				}else if(obj instanceof Fractal) {
+					
+				}else if(obj instanceof Mandala) {
+					new Mandala(canvas, gc,1);
+				}else if(obj instanceof QuadradoGr) {
+					Double x =((QuadradoGr) obj).getP1().getX(),
+							y = ((QuadradoGr) obj).getP1().getY(),
+							x2 = ((QuadradoGr) obj).getP2().getX(),
+							y2 =((QuadradoGr) obj).getP2().getY();
+					QuadradoGr.desenharQuadrado(x.intValue(),y.intValue(),x2.intValue(), y2.intValue(), ((QuadradoGr) obj).getCor(), ((QuadradoGr) obj).getEsp(), gc);
+				}if(obj instanceof Poligono) {
+					((Poligono) obj).desenharPoligono(canvas, gc, 1);
+				}
 			}
 		}
 	}
@@ -167,29 +200,37 @@ public class CanvasAction {
 	//Desenha os primitivos guardados na lista multiplicando as coordenadas por um numero
 	public void loadHistorico(ListaPrimitivos h, Double mult) {
 		Object obj;
-		for(int i = h.getQtd() - 1 ; i >= 0; i--) {
-			obj = h.buscar(i);
-			if(obj instanceof RetaGr) {
-				Double x =((RetaGr) obj).getP1().getX()*mult,
-					y = ((RetaGr) obj).getP1().getY()*mult,
-					x2 = ((RetaGr) obj).getP2().getX()*mult,
-					y2 =((RetaGr) obj).getP2().getY()*mult;
-				RetaGr.desenhar(gc,x,y,x2,y2,"", ((RetaGr) obj).getCor(),  ((RetaGr) obj).getEsp(), AlgoritmosRetas.STROKELINE);
-			}else if(obj instanceof CirculoGr) {
-				Double x = ((CirculoGr) obj).getCentro().getX() * mult,
-				y = ((CirculoGr) obj).getCentro().getY() * mult;
-				CirculoGr.desenhar(gc, x, y, ((CirculoGr) obj).getRaio()*mult, ((CirculoGr) obj).getCor(), "", ((CirculoGr) obj).getEsp(), AlgoritmosCirculos.STROKELINE);
-			}else if(obj instanceof Fractal) {
-				
-			}else if(obj instanceof Mandala) {
-				new Mandala(canvas, gc,0.2);
-			}else if(obj instanceof QuadradoGr) {
-				Double x =((QuadradoGr) obj).getP1().getX()*mult,
-						y = ((QuadradoGr) obj).getP1().getY()*mult,
-						x2 = ((QuadradoGr) obj).getP2().getX()*mult,
-						y2 =((QuadradoGr) obj).getP2().getY()*mult;
-				QuadradoGr.desenharQuadrado(x.intValue(),y.intValue(),x2.intValue(), y2.intValue(), ((QuadradoGr) obj).getCor(), ((QuadradoGr) obj).getEsp(), gc);
+		if(h.vazia() == false) {
+			for(int i = 0 ; i < h.getQtd() ; i++) {
+				obj = h.buscar(i);
+				if(obj instanceof RetaGr) {
+					Double x =((RetaGr) obj).getP1().getX()*mult,
+						y = ((RetaGr) obj).getP1().getY()*mult,
+						x2 = ((RetaGr) obj).getP2().getX()*mult,
+						y2 =((RetaGr) obj).getP2().getY()*mult;
+					RetaGr.desenhar(gc,x,y,x2,y2,"", ((RetaGr) obj).getCor(),  ((RetaGr) obj).getEsp(), AlgoritmosRetas.STROKELINE);
+				}else if(obj instanceof CirculoGr) {
+					Double x = ((CirculoGr) obj).getCentro().getX() * mult,
+					y = ((CirculoGr) obj).getCentro().getY() * mult;
+					CirculoGr.desenhar(gc, x, y, ((CirculoGr) obj).getRaio()*mult, ((CirculoGr) obj).getCor(), "", ((CirculoGr) obj).getEsp(), AlgoritmosCirculos.STROKELINE);
+				}else if(obj instanceof Fractal) {
+					
+				}else if(obj instanceof Mandala) {
+					new Mandala(canvas, gc,0.2);
+				}else if(obj instanceof QuadradoGr) {
+					Double x =((QuadradoGr) obj).getP1().getX()*mult,
+							y = ((QuadradoGr) obj).getP1().getY()*mult,
+							x2 = ((QuadradoGr) obj).getP2().getX()*mult,
+							y2 =((QuadradoGr) obj).getP2().getY()*mult;
+					QuadradoGr.desenharQuadrado(x.intValue(),y.intValue(),x2.intValue(), y2.intValue(), ((QuadradoGr) obj).getCor(), ((QuadradoGr) obj).getEsp(), gc);
+				}else if(obj instanceof Poligono) {
+					((Poligono) obj).desenharPoligono(canvas, gc, mult);
+				}
 			}
 		}
+	}
+	
+	public void doubleClique() {
+		doisCliques = doisCliques ? false : true;
 	}
 }
