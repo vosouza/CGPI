@@ -50,9 +50,10 @@ public class LeitorXML {
         	
 	        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 	        DocumentBuilder builder = factory.newDocumentBuilder();
-	        
+	        System.out.print(fileAsString);
+	       // fileAsString = "file:///" + fileAsString;
 	        Document doc = builder.parse(fileAsString);
-	        
+	      
 	        NodeList figura = doc.getElementsByTagName("Figura");
             Node primitivos = figura.item(0);//entra dentro do no figura
             NodeList listaPrimitivos = primitivos.getChildNodes();//pega todos os filhos do no figura;
@@ -61,7 +62,6 @@ public class LeitorXML {
             for(int i=0 ; i<qtdNodes; i++) {
             	Node primitivo = listaPrimitivos.item(i);
             	
-            	
             	if(primitivo.getNodeName().equals("Reta")) {
             		NodeList reta = primitivo.getChildNodes();
             		Element ponto = (Element) reta.item(0);
@@ -69,10 +69,10 @@ public class LeitorXML {
             		NodeList coordenadas = ponto.getChildNodes();
             		Node xstring = coordenadas.item(0);
             		Node ystring = coordenadas.item(1);
-            		
+            
             		double x = Double.parseDouble(xstring.getTextContent())*500;
             		double y = Double.parseDouble(ystring.getTextContent())*500;
-            		
+            				System.out.println(x+"xxx"+y);
             		ponto = (Element) reta.item(1);
             		coordenadas = ponto.getChildNodes();
             		Node x2string = coordenadas.item(0);
@@ -80,7 +80,7 @@ public class LeitorXML {
             	
             		double x2 = Double.parseDouble(x2string.getTextContent())*500;
             		double y2 = Double.parseDouble(y2string.getTextContent())*500;
-            		
+            		System.out.println(x2+"yyy"+y2);
             		lista.inserir(new RetaGr( (int)x,  (int)y,  (int)x2,  (int)y2, Color.BLACK, "",  1));
 
             	}else if(primitivo.getNodeName().equals("Circulo")) {

@@ -60,6 +60,7 @@ public class Poligono {
 	
 	public void fecharFigura(GraphicsContext gc,double mult) {
 		if(pontos.getQtd()-1 >= 2) {
+			System.out.println("xxx");
 			PontoGr p1 = (PontoGr) pontos.buscar(0);
 			PontoGr p2 = (PontoGr) pontos.buscar(pontos.getQtd()-1);
 			RetaGr.desenhar(gc,(int)p1.getX(),(int)p1.getY(),(int)p2.getX(),(int)p2.getY(),"", cor,  tamanho, AlgoritmosRetas.STROKELINE);

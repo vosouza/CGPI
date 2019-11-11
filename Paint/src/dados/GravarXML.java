@@ -39,13 +39,12 @@ public class GravarXML {
 			
 			Element figura = documentoXML.createElement("Figura");
 			documentoXML.appendChild(figura);
-
+			
 			Object obj;
 			if(lista.vazia() == false) {
 				for(int i = 0 ; i < lista.getQtd() ; i++) {
 					obj = lista.buscar(i);
 					if(obj instanceof RetaGr) {
-						System.out.print("xxx");
 						Element reta = documentoXML.createElement("Reta");
 						Element p1 = documentoXML.createElement("Ponto");
 						
@@ -103,16 +102,47 @@ public class GravarXML {
 					}else if(obj instanceof Mandala) {
 						
 					}else if(obj instanceof QuadradoGr) {
-					
+						System.out.print("xxx");
+						Element retangulo = documentoXML.createElement("Retangulo");
+						Element p1 = documentoXML.createElement("Ponto");
+						
+						Element x = documentoXML.createElement("x");
+						double numx = (((QuadradoGr)obj).getP1().getX())/500;
+						x.appendChild(documentoXML.createTextNode(Double.toString(numx)));
+						
+						Element y = documentoXML.createElement("y");
+						double numy = (((QuadradoGr)obj).getP1().getX())/500;
+						y.appendChild(documentoXML.createTextNode(Double.toString(numy)));
+						
+						p1.appendChild(x);
+						p1.appendChild(y);
+						retangulo.appendChild(p1);
+						
+						Element p2 = documentoXML.createElement("Ponto");
+						
+						Element x1 = documentoXML.createElement("x");
+						double numx1 = (((QuadradoGr)obj).getP2().getX())/500;
+						x1.appendChild(documentoXML.createTextNode(Double.toString(numx1)));
+						
+						Element y1 = documentoXML.createElement("y");
+						double numy1 = (((QuadradoGr)obj).getP2().getX())/500;
+						y1.appendChild(documentoXML.createTextNode(Double.toString(numy1)));
+						
+						p2.appendChild(x1);
+						p2.appendChild(y1);
+						retangulo.appendChild(p2);
+						
+						figura.appendChild(retangulo);
 					}if(obj instanceof Poligono) {
 						
 					}
 				}
 			}
+			
 			TransformerFactory transfac = TransformerFactory.newInstance();
 			Transformer trans = transfac.newTransformer();
 			DOMSource fonteDOC = new DOMSource(documentoXML);
-			StreamResult docfinal = new StreamResult(new File("C:\\Users\\cpudv\\Desktop\\Trabalhos\\CGPI\\Paint\\src\\interfacesFXML\\pessoa.xml"));
+			StreamResult docfinal = new StreamResult(new File("C:\\Users\\306526\\Desktop\\Paint\\src\\interfacesFXML\\pessoa.xml"));
 			trans.transform(fonteDOC, docfinal);
 		} catch (ParserConfigurationException e) {
 			// TODO Auto-generated catch block

@@ -13,7 +13,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseButton;
@@ -33,8 +32,6 @@ public class MainController implements Initializable {
 	@FXML private Canvas viewPortCanvas; // canvas que foi pocionado por fxml
 	@FXML private Canvas miniMapa;
 	
-	@FXML private Button btnReta;
-	@FXML private Button btnCirculo;
 	@FXML private ColorPicker colorPicker;
 	@FXML private Slider sliderTamanho;
 	
