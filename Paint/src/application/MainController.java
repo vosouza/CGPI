@@ -1,8 +1,10 @@
 package application;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import dados.GravarXML;
 import dados.LeitorXML;
 import dados.ListaPrimitivos;
 import dados.PilhaPrimitivos;
@@ -16,6 +18,8 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 
 public class MainController implements Initializable {
 	
@@ -82,12 +86,7 @@ public class MainController implements Initializable {
 	}
 	
 	@FXML private void botaoLimpar(ActionEvent event) {
-		int i = historico.getQtd() -1 ;
-		while(historico.vazia() == false) {
-			desfazer.push(historico.buscar(i));
-			historico.remover(i);
-			i--;
-		}
+		limparHistorico();
 		atualizarTela();
 	}
 	
@@ -111,6 +110,22 @@ public class MainController implements Initializable {
 		atualizarTela();
 	}
 	
+	@FXML private void abrirArquivo(ActionEvent event) {
+		LeitorXML arq = new LeitorXML(historico);
+		FileChooser chooser = new FileChooser();
+        Window stage = null;
+		File file = chooser.showOpenDialog(stage);
+        if (file != null) {
+        	limparHistorico();
+            String fileAsString = file.toString();
+            arq.passar(fileAsString);
+    		atualizarTela();
+        }
+	}
+	@FXML private void salvarArquivo(ActionEvent event) {
+		GravarXML gravador = new GravarXML(historico);
+		gravador.Gravar();
+	}
 	//limpa a tela e redesenha conforme as figuras salvas na lista
 	private void atualizarTela() {
 		desenharNoCanvas.limparTela();
@@ -118,6 +133,17 @@ public class MainController implements Initializable {
 		desenharNoCanvas.loadHistorico(historico);
 		desenharNoMiniMapa.loadHistorico(historico,0.2);//0.2 é a razao da do canvas pelos miniMapa
 	}
+	
+	//Limpa o historico
+	public void limparHistorico() {
+		int i = historico.getQtd() -1 ;
+		while(historico.vazia() == false) {
+			desfazer.push(historico.buscar(i));
+			historico.remover(i);
+			i--;
+		}
+	}
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		//Inicializacao das variaveis
@@ -135,9 +161,7 @@ public class MainController implements Initializable {
 			   } 
 		};   
 		viewPortCanvas.addEventFilter(MouseEvent.MOUSE_MOVED, eventHandler);
-		
-		//LeitorXML arq = new LeitorXML(historico);
-		//arq.passar();
+
 		mode = 0;
 	}
 

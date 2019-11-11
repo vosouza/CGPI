@@ -112,7 +112,7 @@ public class CanvasAction {
 					figura.setTamanho(tamanho);
 					figura.fecharFigura(gc, 1);
 					doubleClique();
-				}else {
+					}else {
 					figura = (Poligono)lista.buscar(lista.getQtd()-1);
 				}
 				

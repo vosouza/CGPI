@@ -43,7 +43,7 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
                   </Button>
-                  <Button fx:id="btnCirculo" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#botaoCirculo" prefHeight="24.0" prefWidth="24.0" style="-fx-background-image: url(&quot; /icones/icone_circulo.png&quot;); -fx-background-repeat: no-repeat;">
+                  <Button fx:id="btnCirculo" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#botaoCirculo" prefHeight="24.0" prefWidth="24.0" style="-fx-background-image: url(&quot; /icones/icone_circulo.png&quot;); -fx-background-repeat: no-repeat;">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
@@ -150,7 +150,8 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem mnemonicParsing="false" onAction="#abrirArquivo" text="Open File" />
+                  <MenuItem mnemonicParsing="false" onAction="#salvarArquivo" text="Save" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
