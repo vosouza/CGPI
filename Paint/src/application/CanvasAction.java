@@ -76,6 +76,7 @@ public class CanvasAction {
 					lista.inserir(new RetaGr( x1, y1, x, y, cor, "",  tamanho));
 					primeiraVez = true;
 				}
+				System.out.println(x+"vvvv " +y);
 			break;
 			
 			case 2: // trata do clique do circulo

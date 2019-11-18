@@ -121,8 +121,19 @@ public class MainController implements Initializable {
 	}
 	@FXML private void salvarArquivo(ActionEvent event) {
 		GravarXML gravador = new GravarXML(historico);
-		gravador.Gravar();
-	}
+        Window stage = null;
+        
+        FileChooser chooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files","*.xml");
+        chooser.getExtensionFilters().add(extFilter);
+		File file = chooser.showSaveDialog(stage);
+		
+        if (file != null) {
+            String fileAsString = file.toString();
+            gravador.Gravar(fileAsString);
+        }
+    }
+		
 	//limpa a tela e redesenha conforme as figuras salvas na lista
 	private void atualizarTela() {
 		desenharNoCanvas.limparTela();

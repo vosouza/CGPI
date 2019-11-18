@@ -13,6 +13,9 @@ public class Poligono {
 	private Color cor; // cor de todas as linhas
 	private int tamanho;
 	
+	public int getQTD() {
+		return pontos.getQtd();
+	}
 	public int getTamanho() {
 		return tamanho;
 	}
@@ -23,13 +26,14 @@ public class Poligono {
 
 	public Poligono() {
 		pontos = new ListaPrimitivos();
+		tamanho = 0;
 	}
 	
 	public void setCor(Color c) {
 		cor = c;
 	}
 	
-	public Color getCor(Color c) {
+	public Color getCor() {
 		return cor;
 	}
 	
@@ -44,6 +48,11 @@ public class Poligono {
 	public PontoGr getLastPonto() {
 		return (PontoGr) pontos.buscar(pontos.getQtd()-1);
 	}
+	
+	public PontoGr getPonto(int x) {
+		return (PontoGr) pontos.buscar(x);
+	}
+	
 	public void desenharPoligono(Canvas canvas, GraphicsContext gc,double mult) {
 		PontoGr p1 = null, p2 = null;		
 		for(int cont = 0; cont< pontos.getQtd() ; cont++) {

@@ -123,7 +123,7 @@ public class LeitorXML {
             		
             		NodeList poligono = primitivo.getChildNodes();
             		int tam = poligono.getLength();
-            		for(int cont =0 ; cont <tam;cont ++) {
+            		for(int cont =0 ; cont <tam-1;cont ++) {
             			Element ponto = (Element) poligono.item(cont );
             			NodeList coordenadas = ponto.getChildNodes();
                 		Node xstring = coordenadas.item(0);
@@ -131,12 +131,23 @@ public class LeitorXML {
                 		
                 		double x = Double.parseDouble(xstring.getTextContent())*500;
                 		double y = Double.parseDouble(ystring.getTextContent())*500;
+                		
                 		figuraPoligono.addPonto(new PontoGr((int)x, (int)y));
             		}
-            		figuraPoligono.setCor(Color.BLACK);
+            		
+            		Element corRETA = (Element) poligono.item(tam-1);
+        			NodeList coordenadas = corRETA.getChildNodes();
+            		Node R = coordenadas.item(0);
+            		Node G = coordenadas.item(1);
+            		Node B = coordenadas.item(2);
+            		double x = Double.parseDouble(R.getTextContent());
+            		double y = Double.parseDouble(G.getTextContent());
+            		double z = Double.parseDouble(B.getTextContent());
+            		
+            		figuraPoligono.setCor(Color.rgb((int)x,(int) y,(int) z));
             		figuraPoligono.setTamanho(1);
             		lista.inserir(figuraPoligono);
-            		System.out.println("Poligono");
+            		
             	}
             }
             
